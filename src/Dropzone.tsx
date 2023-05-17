@@ -56,7 +56,7 @@ function MyDropzone(props: DropzoneProps) {
 
     useEffect(() => {
       props.setUploadedImage(acceptedFiles[0]);
-    }, [acceptedFiles])
+    }, [acceptedFiles, props])
 
   return (
     <section className="container">
