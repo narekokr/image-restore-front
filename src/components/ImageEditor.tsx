@@ -81,8 +81,8 @@ const ImageEditor: React.FC = () => {
                   onChange={handleDrawing}
                   style={{ border: '1px solid black' }}
                 />
-                <div>
-                  <label htmlFor="brushSize">Brush Size:</label>
+                <div className="brush">
+                  <label className="brushLabel" htmlFor="brushSize">Brush Size:</label>
                   <input
                     type="range"
                     id="brushSize"

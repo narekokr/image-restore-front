@@ -35,3 +35,11 @@
     margin: 10px auto;
     font-size: 2rem;
 }
+
+.brush {
+    margin: 20px auto;
+}
+
+.brushLabel {
+    margin-right: 20px;
+}
