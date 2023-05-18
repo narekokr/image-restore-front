@@ -1,0 +1,37 @@
+.firstCanvas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resetButton {
+    margin: 0 auto;
+}
+
+.generateButton {
+    margin: 0 auto;
+}
+
+.editorContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.canvases {
+    display: flex;
+    margin: 20px auto;
+    max-width: 1200px;
+    gap: 40px;
+    justify-content: center;
+}
+
+.editorContainer .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content p {
+    margin: 10px auto;
+    font-size: 2rem;
+}
