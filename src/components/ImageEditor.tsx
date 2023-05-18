@@ -73,12 +73,12 @@ const ImageEditor: React.FC = () => {
                   className="drawable"
                   ref={canvasRef}
                   brushRadius={brushSize}
+                  lazyRadius={0}
                   brushColor="#ffffff" // Set brush color to black
                   canvasWidth={canvasWidth}
                   canvasHeight={canvasHeight}
                   imgSrc={URL.createObjectURL(uploadedImage as File)}
                   onChange={handleDrawing}
-                  hideInterface
                   style={{ border: '1px solid black' }}
                 />
                 <div>
