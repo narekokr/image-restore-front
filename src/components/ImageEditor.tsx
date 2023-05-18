@@ -70,6 +70,7 @@ const ImageEditor: React.FC = () => {
               <div className="firstCanvas">
                 <h3>Drawing On Image</h3>
                 <CanvasDraw
+                  className="drawable"
                   ref={canvasRef}
                   brushRadius={brushSize}
                   brushColor="#ffffff" // Set brush color to black
@@ -77,6 +78,7 @@ const ImageEditor: React.FC = () => {
                   canvasHeight={canvasHeight}
                   imgSrc={URL.createObjectURL(uploadedImage as File)}
                   onChange={handleDrawing}
+                  hideInterface
                   style={{ border: '1px solid black' }}
                 />
                 <div>

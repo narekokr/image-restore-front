@@ -35,3 +35,7 @@
     margin: 10px auto;
     font-size: 2rem;
 }
+
+.drawable {
+  cursor: pointer !important;
+}
