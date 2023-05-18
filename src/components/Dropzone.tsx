@@ -64,8 +64,8 @@ function MyDropzone(props: DropzoneProps) {
     <section className="container">
       <div {...getRootProps({ className: 'dropzone', style })}>
         <input {...getInputProps()} />
-        <p>Drag and drop some files here, or click to select files</p>
-        <em>(1 file are the maximum number of files you can drop here)</em>
+        <p>Drag and drop a file here, or click to select file</p>
+        <em>(1 file is the maximum number of files you can drop here)</em>
       </div>
     </section>
   );
