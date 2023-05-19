@@ -10,9 +10,9 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div className="app-wrapper">
+      <div className="app-wrapper w-full bg-gradient-to-br from-emerald-100 via-blue-50 to-rose-100 ">
         <Menu />
-        <main className="app-content">
+        <main className="app-content flex min-h-screen w-full flex-col items-center justify-center py-32">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

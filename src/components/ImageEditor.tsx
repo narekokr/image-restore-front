@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CanvasDraw from 'react-canvas-draw';
-import Button from 'react-bootstrap/Button';
-import MyDropzone from './Dropzone';
-import './ImageEditor.css';
+// import './ImageEditor.css';
 
-const ImageEditor: React.FC = () => {
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+const ImageEditor = ({ uploadedImage }: {
+  uploadedImage: string | null
+}) => {
   const canvasRef = useRef<CanvasDraw>(null);
   const [brushSize, setBrushSize] = useState(4);
   const [canvasWidth, setCanvasWidth] = useState(512);
@@ -22,20 +21,6 @@ const ImageEditor: React.FC = () => {
       link.click();
     }
   };
-
-  useEffect(() => {
-    if (uploadedImage) {
-      const image = new Image();
-      image.onload = () => {
-        const { width, height } = image;
-        const maxCanvasSize = 512;
-        const ratio = maxCanvasSize / Math.max(width, height);
-        setCanvasWidth(width * ratio);
-        setCanvasHeight(height * ratio);
-      };
-      image.src = URL.createObjectURL(uploadedImage);
-    }
-  }, [uploadedImage]);
 
   const handleDrawing = () => {
     if (canvasRef.current && previewCanvasRef.current) {
@@ -58,15 +43,31 @@ const ImageEditor: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (uploadedImage) {
+      handleEraser();
+      const image = new Image();
+      image.onload = () => {
+        const { width, height } = image;
+        const maxCanvasSize = 512;
+        const ratio = maxCanvasSize / Math.max(width, height);
+        setCanvasWidth(width * ratio);
+        setCanvasHeight(height * ratio);
+      };
+      image.src = uploadedImage;
+    }
+  }, [uploadedImage]);
+
   return (
     <div className="editorContainer">
-      <h1 style={{ textAlign: 'center' }}>Image Restoration</h1>
-      <MyDropzone setUploadedImage={setUploadedImage} />
+      {/* <MyDropzone setUploadedImage={setUploadedImage} /> */}
       {uploadedImage
           && (
           <div className="content">
-            <p>Draw the scratches on the image for restoration</p>
-            <div className="canvases">
+            <p className="mt-6 text-center text-gray-500 md:text-xl">
+              Draw the scratches on the images
+            </p>
+            <div className="flex flex-wrap justify-center gap-x-20">
               <div className="firstCanvas">
                 <h3>Drawing On Image</h3>
                 <CanvasDraw
@@ -74,10 +75,10 @@ const ImageEditor: React.FC = () => {
                   ref={canvasRef}
                   brushRadius={brushSize}
                   lazyRadius={0}
-                  brushColor="#ffffff" // Set brush color to black
+                  brushColor="#ffffff"
                   canvasWidth={canvasWidth}
                   canvasHeight={canvasHeight}
-                  imgSrc={URL.createObjectURL(uploadedImage as File)}
+                  imgSrc={uploadedImage}
                   onChange={handleDrawing}
                   style={{ border: '1px solid black' }}
                 />
@@ -92,7 +93,6 @@ const ImageEditor: React.FC = () => {
                     onChange={handleBrushSizeChange}
                   />
                 </div>
-                <Button className="resetButton" onClick={handleEraser}>Reset</Button>
               </div>
               <div>
                 <h3>Drawing Preview</h3>
@@ -109,7 +109,20 @@ const ImageEditor: React.FC = () => {
                 />
               </div>
             </div>
-            <Button className="generateButton" onClick={handleSave}>Generate</Button>
+            <div className="flex flex-wrap justify-center gap-x-20">
+              <button
+                className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                onClick={handleEraser}
+              >
+                <p>Reset</p>
+              </button>
+              <button
+                className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                onClick={handleSave}
+              >
+                <p>Generate</p>
+              </button>
+            </div>
           </div>
           )}
     </div>
