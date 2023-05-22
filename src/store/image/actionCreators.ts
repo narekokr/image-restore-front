@@ -1,6 +1,7 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
-import { ImageActionTypes, ImageState } from './types';
+import { Buffer } from 'buffer';
+import { ImageActionTypes, ImageState, OptionNames } from './types';
 import client from '../../axios';
 import { ImageAction } from './actions';
 import { RootState } from '../rootReducer';
@@ -8,6 +9,13 @@ import { RootState } from '../rootReducer';
 export function storeImage(payload: string | null) {
   return {
     type: ImageActionTypes.SET_IMAGE,
+    payload,
+  };
+}
+
+export function toggleOption(payload: OptionNames) {
+  return {
+    type: ImageActionTypes.TOGGLE_OPTION,
     payload,
   };
 }
@@ -37,7 +45,9 @@ export function getResultImage(image: string):
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      responseType: 'arraybuffer',
     });
-    dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_SUCCESS, payload: response.data });
+    const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
+    dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_SUCCESS, payload: output });
   };
 }

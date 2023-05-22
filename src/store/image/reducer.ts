@@ -1,11 +1,14 @@
 import { ImageAction } from './actions';
-import { ImageActionTypes, ImageState } from './types';
+import { ImageActionTypes, ImageState, OptionNames } from './types';
 
 const initialState = {
   image: null,
   loading: false,
   error: null,
   uploadedImage: null,
+  [OptionNames.colorizeSelected]: false,
+  [OptionNames.drawScratchesYourself]: false,
+  [OptionNames.removeScratchesSelected]: false,
 };
 
 export const imageReducer = (state: ImageState = initialState, action: ImageAction): ImageState => {
@@ -35,6 +38,12 @@ export const imageReducer = (state: ImageState = initialState, action: ImageActi
       return {
         ...state,
         uploadedImage: action.payload,
+      };
+
+    case ImageActionTypes.TOGGLE_OPTION:
+      return {
+        ...state,
+        [OptionNames[action.payload]]: !state[OptionNames[action.payload]],
       };
     default:
       return state;

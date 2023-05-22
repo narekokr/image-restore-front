@@ -1,19 +1,15 @@
 import React, {
-  useState,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useMemo,
-  ChangeEvent,
-  FC,
+  ChangeEvent, Dispatch, FC, SetStateAction, useCallback, useMemo, useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LoadingDots } from './shared/icons';
 import Modal from './shared/modal';
 import SelectOptions from './SelectOptions';
-import { getResultImage, storeImage } from '../store/image/actionCreators';
+import { getResultImage, storeImage, toggleOption } from '../store/image/actionCreators';
 import { useSelector } from '../store';
+import { OptionNames } from '../store/image/types';
+
 // import { AppDispatch } from '../../';
 
 interface UploadModalProps {
@@ -42,11 +38,27 @@ const UploadModal:FC<UploadModalProps> = ({
   const [isDragActive, setDragActive] = useState<boolean>(false);
   const [isFileUploaded, setFileUploaded] = useState<boolean>(false);
   const [isFileSizeTooBig, setFileSizeTooBig] = useState<boolean>(false);
-  const [colorizeSelected, setColorizeSelected] = useState(false);
-  const [removeScratchesSelected, setRemoveScratchesSelected] = useState(false);
-  const [drawScratchesYourself, setDrawScratchesYourself] = useState(false);
 
   const uploadedImage = useSelector((state) => state.image.uploadedImage);
+  const colorizeSelected = useSelector((state) => state.image[OptionNames.colorizeSelected]);
+  const removeScratchesSelected = useSelector(
+    (state) => state.image[OptionNames.removeScratchesSelected],
+  );
+  const drawScratchesYourself = useSelector(
+    (state) => state.image[OptionNames.drawScratchesYourself],
+  );
+
+  const setColorizeSelected = () => {
+    dispatch(toggleOption(OptionNames.colorizeSelected));
+  };
+
+  const setRemoveScratchesSelected = () => {
+    dispatch(toggleOption(OptionNames.removeScratchesSelected));
+  };
+
+  const setDrawScratchesYourself = () => {
+    dispatch(toggleOption(OptionNames.drawScratchesYourself));
+  };
 
   const isThirdEndpoint = drawScratchesYourself;
   console.log(removeScratchesSelected, 'sel');

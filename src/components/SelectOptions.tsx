@@ -6,9 +6,9 @@ const SelectOptions = ({
   setRemoveScratchesSelected, drawScratchesYourself, setDrawScratchesYourself,
 }: {
   handleSubmit: () => void,
-  setColorizeSelected: React.Dispatch<React.SetStateAction<boolean>>,
-  setRemoveScratchesSelected: React.Dispatch<React.SetStateAction<boolean>>,
-  setDrawScratchesYourself: React.Dispatch<React.SetStateAction<boolean>>,
+  setColorizeSelected: () => void,
+  setRemoveScratchesSelected: () => void,
+  setDrawScratchesYourself: () => void,
   colorizeSelected: boolean,
   removeScratchesSelected: boolean,
   drawScratchesYourself: boolean,

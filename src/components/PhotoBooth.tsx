@@ -4,6 +4,7 @@ import { Download } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { FADE_DOWN_ANIMATION_VARIANTS } from '../constants';
 import { LoadingCircle } from './shared/icons';
+import { useSelector } from '../store';
 
 const variants = {
   enter: (direction: number) => ({
@@ -31,10 +32,10 @@ function forceDownload(blobUrl: string, filename: string) {
 
 export default function PhotoBooth() {
   const {
-    input = '',
-    output = '',
     failed = '',
   } = {};
+  const uploadedImage = useSelector((state) => state.image.uploadedImage);
+  const output = useSelector((state) => state.image.image);
   const [state, setState] = useState('output');
   const direction = useMemo(() => (state === 'output' ? 1 : -1), [state]);
   const [downloading, setDownloading] = useState(false);
@@ -74,23 +75,19 @@ export default function PhotoBooth() {
           - there's an output
           - we're in the output tab
       */}
-      { output && state === 'output' && !failed && (
+      { state === 'output' && !failed && (
         <button
           onClick={() => {
             setDownloading(true);
-            fetch(output, {
-              mode: 'cors',
-            })
-              .then((response) => response.blob())
-              .then((blob) => {
-                const blobUrl = window.URL.createObjectURL(blob);
-                forceDownload(
-                  blobUrl,
-                  `${'demo'}.${state === 'output' ? 'gif' : ''}`,
-                );
-                setDownloading(false);
-              })
-              .catch((e) => console.error(e));
+            const blobUrl = output;
+            if (blobUrl) {
+              forceDownload(
+                blobUrl,
+                `${'demo'}.${state === 'output' ? 'gif' : ''}`,
+              );
+            }
+
+            setDownloading(false);
           }}
           className="absolute right-5 top-5 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition-all hover:scale-105 active:scale-95"
         >
@@ -160,7 +157,7 @@ export default function PhotoBooth() {
             </motion.div>
           ) : (
             <motion.div
-              key={input}
+              key={uploadedImage}
               custom={direction}
               variants={variants}
               initial="enter"
@@ -170,7 +167,7 @@ export default function PhotoBooth() {
             >
               <img
                 alt="original image"
-                src={input}
+                src={uploadedImage as string}
                 className="object-cover"
                 placeholder="blur"
 
