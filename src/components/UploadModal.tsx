@@ -8,7 +8,7 @@ import Modal from './shared/modal';
 import SelectOptions from './SelectOptions';
 import { getResultImage, storeImage, toggleOption } from '../store/image/actionCreators';
 import { useSelector } from '../store';
-import { OptionNames } from '../store/image/types';
+import { ImageActionTypes, OptionNames } from '../store/image/types';
 import { ApiEndpoints, getEndpoint } from '../constants';
 
 // import { AppDispatch } from '../../';
@@ -17,14 +17,12 @@ interface UploadModalProps {
   showUploadModal: boolean;
   setShowUploadModal: Dispatch<SetStateAction<boolean>>;
   setUploadedImage: React.Dispatch<React.SetStateAction<string | null>>;
-  setStarted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UploadModal:FC<UploadModalProps> = ({
   showUploadModal,
   setShowUploadModal,
   setUploadedImage,
-  setStarted,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,12 +86,13 @@ const UploadModal:FC<UploadModalProps> = ({
   );
 
   const handleSubmit = () => {
-    setStarted(true);
     setShowUploadModal(false);
     console.log(drawScratchesYourself, removeScratchesSelected, colorizeSelected, 'link');
     if (drawScratchesYourself) {
       navigate('/draw');
     } else {
+      // @ts-ignore
+      dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
       // @ts-ignore
       dispatch(getResultImage(uploadedImage, endpoint));
       navigate('/result');
@@ -252,7 +251,6 @@ const UploadModal:FC<UploadModalProps> = ({
 
 export default function useUploadModal(
   setUploadedImage: React.Dispatch<React.SetStateAction<string | null>>,
-  setStarted: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const [showUploadModal, setShowUploadModal] = useState(false);
 
@@ -262,7 +260,6 @@ export default function useUploadModal(
         showUploadModal={showUploadModal}
         setShowUploadModal={setShowUploadModal}
         setUploadedImage={setUploadedImage}
-        setStarted={setStarted}
       />
     ),
     [showUploadModal, setShowUploadModal],

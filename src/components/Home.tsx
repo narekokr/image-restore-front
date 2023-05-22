@@ -9,8 +9,7 @@ import { FADE_DOWN_ANIMATION_VARIANTS } from '../constants';
 
 const Home: React.FC = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [started, setStarted] = useState<boolean>(false);
-  const { UploadModal, setShowUploadModal } = useUploadModal(setUploadedImage, setStarted);
+  const { UploadModal, setShowUploadModal } = useUploadModal(setUploadedImage);
   const a = useSelector((state) => state);
   console.log(a, 'aa');
   return (
