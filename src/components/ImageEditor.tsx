@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from '../store';
 import { getResultImage, getResultImageWithMask } from '../store/image/actionCreators';
-import { ApiEndpoints } from '../constants';
+import { ApiEndpoints, getEndpoint } from '../constants';
+import { OptionNames } from '../store/image/types';
 
 const ImageEditor = () => {
   const uploadedImage = useSelector((state) => state.image.uploadedImage);
@@ -22,6 +23,11 @@ const ImageEditor = () => {
   const [canvasWidth, setCanvasWidth] = useState(512);
   const [canvasHeight, setCanvasHeight] = useState(512);
   const previewCanvasRef = useRef<CanvasDraw>(null);
+  const colorizeSelected = useSelector((state) => state.image[OptionNames.colorizeSelected]);
+  const removeScratchesSelected = useSelector(
+    (state) => state.image[OptionNames.removeScratchesSelected],
+  );
+  const endpoint = getEndpoint(colorizeSelected, removeScratchesSelected);
 
   const handleSave = () => {
     if (canvasRef.current && uploadedImage) {
@@ -29,7 +35,7 @@ const ImageEditor = () => {
       const canvas = previewCanvasRef.current.canvasContainer.childNodes[1] as HTMLCanvasElement;
       const mask = canvas.toDataURL();
       // @ts-ignore
-      dispatch(getResultImageWithMask(uploadedImage, mask, ApiEndpoints.INPAINT));
+      dispatch(getResultImageWithMask(uploadedImage, mask, endpoint));
       navigate('/result');
     }
   };
