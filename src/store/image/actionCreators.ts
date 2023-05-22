@@ -42,13 +42,44 @@ export function getResultImage(image: string, endpoint: ApiEndpoints):
 
     formData.append('image', blob, 'image.jpg');
     dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
-    const response = await client.post(endpoint, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      responseType: 'arraybuffer',
-    });
-    const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
-    dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_SUCCESS, payload: output });
+    try {
+      const response = await client.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      });
+      const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
+      dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_SUCCESS, payload: output });
+    } catch (e) {
+      // @ts-ignore
+      dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_FAIL, payload: e.message });
+    }
+  };
+}
+
+export function getResultImageWithMask(image: string, mask: string, endpoint: ApiEndpoints):
+    ThunkAction<void, RootState, any, Action<string>> {
+  return async function getResultImageThunk(dispatch) {
+    const blob = dataUrlToBlob(image);
+    const maskBlob = dataUrlToBlob(mask);
+    const formData = new FormData();
+
+    formData.append('image', blob, 'image.jpg');
+    formData.append('mask', maskBlob, 'mask.jpg');
+    dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
+    try {
+      const response = await client.post(endpoint, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        responseType: 'arraybuffer',
+      });
+      const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
+      dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_SUCCESS, payload: output });
+    } catch (e) {
+      // @ts-ignore
+      dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_FAIL, payload: e.message });
+    }
   };
 }

@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CanvasDraw from 'react-canvas-draw';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useSelector } from '../store';
+import { getResultImage, getResultImageWithMask } from '../store/image/actionCreators';
+import { ApiEndpoints } from '../constants';
 
 const ImageEditor = () => {
   const uploadedImage = useSelector((state) => state.image.uploadedImage);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!uploadedImage) {
@@ -20,13 +24,13 @@ const ImageEditor = () => {
   const previewCanvasRef = useRef<CanvasDraw>(null);
 
   const handleSave = () => {
-    if (canvasRef.current) {
+    if (canvasRef.current && uploadedImage) {
       // @ts-ignore
       const canvas = previewCanvasRef.current.canvasContainer.childNodes[1] as HTMLCanvasElement;
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL();
-      link.download = 'drawing.png';
-      link.click();
+      const mask = canvas.toDataURL();
+      // @ts-ignore
+      dispatch(getResultImageWithMask(uploadedImage, mask, ApiEndpoints.INPAINT));
+      navigate('/result');
     }
   };
 
