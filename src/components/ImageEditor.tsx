@@ -1,10 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CanvasDraw from 'react-canvas-draw';
-// import './ImageEditor.css';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from '../store';
 
-const ImageEditor = ({ uploadedImage }: {
-  uploadedImage: string | null
-}) => {
+const ImageEditor = () => {
+  const uploadedImage = useSelector((state) => state.image.uploadedImage);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!uploadedImage) {
+      navigate('/');
+    }
+  }, [uploadedImage]);
+
   const canvasRef = useRef<CanvasDraw>(null);
   const [brushSize, setBrushSize] = useState(4);
   const [canvasWidth, setCanvasWidth] = useState(512);
@@ -67,9 +75,9 @@ const ImageEditor = ({ uploadedImage }: {
             <p className="mt-6 text-center text-gray-500 md:text-xl">
               Draw the scratches on the images
             </p>
-            <div className="flex flex-wrap justify-center gap-x-20">
+            <div className="flex flex-wrap justify-center gap-x-20 mt-6">
               <div className="firstCanvas">
-                <h3>Drawing On Image</h3>
+                <h3 className="mb-2 text-xl text-center">Drawing On Image</h3>
                 <CanvasDraw
                   className="drawable"
                   ref={canvasRef}
@@ -82,20 +90,10 @@ const ImageEditor = ({ uploadedImage }: {
                   onChange={handleDrawing}
                   style={{ border: '1px solid black' }}
                 />
-                <div className="brush">
-                  <label className="brushLabel" htmlFor="brushSize">Brush Size:</label>
-                  <input
-                    type="range"
-                    id="brushSize"
-                    min="1"
-                    max="20"
-                    value={brushSize}
-                    onChange={handleBrushSizeChange}
-                  />
-                </div>
+
               </div>
               <div>
-                <h3>Drawing Preview</h3>
+                <h3 className="mb-2 text-xl text-center">Drawing Preview</h3>
                 <CanvasDraw
                   ref={previewCanvasRef}
                   brushColor="#ffffff"
@@ -109,20 +107,34 @@ const ImageEditor = ({ uploadedImage }: {
                 />
               </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-x-20">
-              <button
-                className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                onClick={handleEraser}
-              >
-                <p>Reset</p>
-              </button>
-              <button
-                className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                onClick={handleSave}
-              >
-                <p>Generate</p>
-              </button>
+            <div className="flex justify-between align-center">
+              <div className="mt-6">
+                <label className="brushLabel mr-2" htmlFor="brushSize">Brush Size:</label>
+                <input
+                  type="range"
+                  id="brushSize"
+                  min="1"
+                  max="20"
+                  value={brushSize}
+                  onChange={handleBrushSizeChange}
+                />
+              </div>
+              <div className="flex flex-wrap justify-end gap-x-5">
+                <button
+                  className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                  onClick={handleEraser}
+                >
+                  <p className="text-lg">Reset</p>
+                </button>
+                <button
+                  className="group mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                  onClick={handleSave}
+                >
+                  <p className="text-lg">Generate</p>
+                </button>
+              </div>
             </div>
+
           </div>
           )}
     </div>

@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Balancer from 'react-wrap-balancer';
 import { Upload } from 'lucide-react';
+import { useSelector } from '../store';
 import ImageEditor from './ImageEditor';
-import useUploadModal from './upload-modal';
+import useUploadModal from './UploadModal';
 import { FADE_DOWN_ANIMATION_VARIANTS } from '../constants';
 
 const Home: React.FC = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const { UploadModal, setShowUploadModal } = useUploadModal(setUploadedImage);
+  const [started, setStarted] = useState<boolean>(false);
+  const { UploadModal, setShowUploadModal } = useUploadModal(setUploadedImage, setStarted);
+  const a = useSelector((state) => state);
+  console.log(a, 'aa');
   return (
     <div>
       <UploadModal />
@@ -43,7 +47,6 @@ const Home: React.FC = () => {
                 Transform your images with just a few clicks. Whether you want to bring life to
                 black and white photos or
                 restore old and scratched images, we&apos;ve got you covered.
-                {' '}
               </Balancer>
             </motion.p>
             <motion.div variants={FADE_DOWN_ANIMATION_VARIANTS} className="-mb-4">
@@ -52,7 +55,8 @@ const Home: React.FC = () => {
                 onClick={() => setShowUploadModal(true)}
               >
                 <Upload className="h-5 w-5 text-white group-hover:text-black" />
-                <p>Upload a photo</p>
+                <p className="text-2xl">Upload a photo</p>
+
               </button>
             </motion.div>
           </motion.div>
@@ -61,11 +65,9 @@ const Home: React.FC = () => {
             className="group mx-auto mt-6 flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
             onClick={() => setShowUploadModal(true)}
           >
-            <p>Upload another photo</p>
+            <p className="text-lg">Upload another photo</p>
           </button>
         )}
-      { uploadedImage && <ImageEditor uploadedImage={uploadedImage} />}
-
     </div>
   );
 };

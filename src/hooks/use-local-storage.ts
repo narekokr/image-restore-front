@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from 'react';
 
 const useLocalStorage = <T>(
   key: string,
@@ -7,7 +8,6 @@ const useLocalStorage = <T>(
   const [storedValue, setStoredValue] = useState(initialValue);
 
   useEffect(() => {
-    // Retrieve from localStorage
     const item = window.localStorage.getItem(key);
     if (item) {
       setStoredValue(JSON.parse(item));
@@ -15,9 +15,8 @@ const useLocalStorage = <T>(
   }, [key]);
 
   const setValue = (value: T) => {
-    // Save state
     setStoredValue(value);
-    // Save to localStorage
+
     window.localStorage.setItem(key, JSON.stringify(value));
   };
   return [storedValue, setValue];
