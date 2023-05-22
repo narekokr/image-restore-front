@@ -19,7 +19,7 @@ export default function Menu() {
         </Link>
         <div className="flex items-center space-x-4">
           <a
-            href="https://github.com"
+            href="https://github.com/narekokr/image-restore-back"
             target="_blank"
             rel="noopener noreferrer"
           >
