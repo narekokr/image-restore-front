@@ -11,7 +11,6 @@ const Home: React.FC = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const { UploadModal, setShowUploadModal } = useUploadModal(setUploadedImage);
   const a = useSelector((state) => state);
-  console.log(a, 'aa');
   return (
     <div>
       <UploadModal />

@@ -20,8 +20,6 @@ const SelectOptions = ({
 
   const isDisabled = !colorizeSelected && !removeScratchesSelected && !drawScratchesYourself;
 
-  console.log(process.env.REACT_APP_API_URL, 'URL');
-
   return (
     <div className="flex flex-col justify-center bg-gray-50 min-w-28rem  ">
       <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center md:px-16">

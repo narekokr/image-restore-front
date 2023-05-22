@@ -46,8 +46,6 @@ export default function PhotoBooth() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
 
-  console.log(loading, output, 'loading');
-
   useEffect(() => {
     if (!uploadedImage) {
       navigate('/');

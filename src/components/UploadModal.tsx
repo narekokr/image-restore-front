@@ -87,7 +87,6 @@ const UploadModal:FC<UploadModalProps> = ({
 
   const handleSubmit = () => {
     setShowUploadModal(false);
-    console.log(drawScratchesYourself, removeScratchesSelected, colorizeSelected, 'link');
     if (drawScratchesYourself) {
       navigate('/draw');
     } else {
