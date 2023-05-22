@@ -30,6 +30,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-shadow': 'off',
     'no-unused-vars': 'off',
+    'no-plusplus': 'off',
     // '@typescript-eslint/no-unused-vars': 'error',
   },
 };
