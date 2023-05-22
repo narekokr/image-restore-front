@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router, Route, Routes,
+  BrowserRouter as Router, Navigate, Route, Routes,
 } from 'react-router-dom';
 // import dotenv from 'dotenv';
 import About from './components/About';
@@ -10,7 +10,7 @@ import './App.css';
 import DrawContainer from './containers/DrawContainer';
 import ImageEditor from './components/ImageEditor';
 import PhotoBooth from './components/PhotoBooth';
-// import NotFoundPage from './components/NotFound';
+import NotFoundPage from './components/NotFound';
 
 // dotenv.config();
 
@@ -25,7 +25,10 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/draw" element={<ImageEditor />} />
             <Route path="/result" element={<PhotoBooth />} />
-            {/* <Route path="*" element={<NotFoundPage />} /> */}
+            <Route
+              path="*"
+              element={<Navigate to="/" replace />}
+            />
           </Routes>
         </main>
         <footer className="bg-dark text-center text-white app-footer">
