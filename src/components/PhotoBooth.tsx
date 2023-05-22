@@ -2,6 +2,7 @@
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FADE_DOWN_ANIMATION_VARIANTS } from '../constants';
 import { LoadingCircle } from './shared/icons';
 import { useSelector } from '../store';
@@ -31,16 +32,15 @@ function forceDownload(blobUrl: string, filename: string) {
 }
 
 export default function PhotoBooth() {
-  const {
-    failed = '',
-  } = {};
   const uploadedImage = useSelector((state) => state.image.uploadedImage);
   const output = useSelector((state) => state.image.image);
+  const failed = useSelector((state) => state.image.error);
   const [state, setState] = useState('output');
   const direction = useMemo(() => (state === 'output' ? 1 : -1), [state]);
   const [downloading, setDownloading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -55,6 +55,12 @@ export default function PhotoBooth() {
       setLoading(false);
     }
   }, [output]);
+
+  useEffect(() => {
+    if (!uploadedImage) {
+      navigate('/');
+    }
+  }, [uploadedImage]);
 
   return (
     <motion.div
@@ -118,7 +124,7 @@ export default function PhotoBooth() {
               {failed && (
                 <div className="z-10 flex h-full w-full flex-col items-center bg-white pt-[140px] sm:pt-[280px]">
                   <p className="text-sm text-red-600">
-                    Failed to run - could not find face in image. Try another!
+                    Failed to run. Try another!
                   </p>
                 </div>
               )}
@@ -170,6 +176,8 @@ export default function PhotoBooth() {
                 src={uploadedImage as string}
                 className="object-cover"
                 placeholder="blur"
+                width={1280}
+                height={1280}
 
               />
             </motion.div>
