@@ -5,6 +5,7 @@ import { ImageActionTypes, ImageState, OptionNames } from './types';
 import client from '../../axios';
 import { ImageAction } from './actions';
 import { RootState } from '../rootReducer';
+import { ApiEndpoints } from '../../constants';
 
 export function storeImage(payload: string | null) {
   return {
@@ -33,7 +34,7 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([u8arr], { type: mime });
 };
 
-export function getResultImage(image: string):
+export function getResultImage(image: string, endpoint: ApiEndpoints):
     ThunkAction<void, RootState, any, Action<string>> {
   return async function getResultImageThunk(dispatch) {
     const blob = dataUrlToBlob(image);
@@ -41,7 +42,7 @@ export function getResultImage(image: string):
 
     formData.append('image', blob, 'image.jpg');
     dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
-    const response = await client.post('/image/inpaint', formData, {
+    const response = await client.post(endpoint, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

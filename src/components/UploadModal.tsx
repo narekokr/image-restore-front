@@ -9,6 +9,7 @@ import SelectOptions from './SelectOptions';
 import { getResultImage, storeImage, toggleOption } from '../store/image/actionCreators';
 import { useSelector } from '../store';
 import { OptionNames } from '../store/image/types';
+import { ApiEndpoints, getEndpoint } from '../constants';
 
 // import { AppDispatch } from '../../';
 
@@ -60,8 +61,7 @@ const UploadModal:FC<UploadModalProps> = ({
     dispatch(toggleOption(OptionNames.drawScratchesYourself));
   };
 
-  const isThirdEndpoint = drawScratchesYourself;
-  console.log(removeScratchesSelected, 'sel');
+  const endpoint = getEndpoint(colorizeSelected, removeScratchesSelected);
 
   const onChangePicture = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -91,11 +91,11 @@ const UploadModal:FC<UploadModalProps> = ({
     setStarted(true);
     setShowUploadModal(false);
     console.log(drawScratchesYourself, removeScratchesSelected, colorizeSelected, 'link');
-    if (isThirdEndpoint) {
+    if (drawScratchesYourself) {
       navigate('/draw');
     } else {
       // @ts-ignore
-      dispatch(getResultImage(uploadedImage));
+      dispatch(getResultImage(uploadedImage, endpoint));
       navigate('/result');
     }
   };
