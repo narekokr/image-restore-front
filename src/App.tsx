@@ -7,10 +7,8 @@ import About from './components/About';
 import Home from './components/Home';
 import Menu from './components/Menu';
 import './App.css';
-import DrawContainer from './containers/DrawContainer';
 import ImageEditor from './components/ImageEditor';
 import PhotoBooth from './components/PhotoBooth';
-import NotFoundPage from './components/NotFound';
 
 // dotenv.config();
 

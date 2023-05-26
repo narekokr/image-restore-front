@@ -4,14 +4,12 @@ import React, {
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LoadingDots } from './shared/icons';
-import Modal from './shared/modal';
+import Modal from './shared/Modal';
 import SelectOptions from './SelectOptions';
 import { getResultImage, storeImage, toggleOption } from '../store/image/actionCreators';
 import { useSelector } from '../store';
 import { ImageActionTypes, OptionNames } from '../store/image/types';
 import { ApiEndpoints, getEndpoint } from '../constants';
-
-// import { AppDispatch } from '../../';
 
 interface UploadModalProps {
   showUploadModal: boolean;

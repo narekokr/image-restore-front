@@ -1,10 +1,7 @@
 import React from 'react';
 import SwitchButton from './shared/SwitchButton';
 
-const SelectOptions = ({
-  handleSubmit, colorizeSelected, setColorizeSelected, removeScratchesSelected,
-  setRemoveScratchesSelected, drawScratchesYourself, setDrawScratchesYourself,
-}: {
+interface SelectOptionsProps {
   handleSubmit: () => void,
   setColorizeSelected: () => void,
   setRemoveScratchesSelected: () => void,
@@ -12,7 +9,16 @@ const SelectOptions = ({
   colorizeSelected: boolean,
   removeScratchesSelected: boolean,
   drawScratchesYourself: boolean,
+}
 
+const SelectOptions: React.FC<SelectOptionsProps> = ({
+  handleSubmit,
+  colorizeSelected,
+  setColorizeSelected,
+  removeScratchesSelected,
+  setRemoveScratchesSelected,
+  drawScratchesYourself,
+  setDrawScratchesYourself,
 }) => {
   const isFirstEndpoint = colorizeSelected && !removeScratchesSelected;
   const isSecondEndpoint = colorizeSelected && removeScratchesSelected;
