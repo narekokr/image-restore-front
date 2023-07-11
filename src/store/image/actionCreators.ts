@@ -34,9 +34,7 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([u8arr], { type: mime });
 };
 
-const dataUrlToBase64 = (dataUrl: string) => {
-  return dataUrl.split(',')[1];
-};
+const dataUrlToBase64 = (dataUrl: string) => dataUrl.split(',')[1];
 
 export function getResultImage(image: string, endpoint: ApiEndpoints):
     ThunkAction<void, RootState, any, Action<string>> {
