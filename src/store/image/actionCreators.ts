@@ -34,19 +34,17 @@ const dataUrlToBlob = (dataUrl: string) => {
   return new Blob([u8arr], { type: mime });
 };
 
+const dataUrlToBase64 = (dataUrl: string) => {
+  return dataUrl.split(',')[1];
+};
+
 export function getResultImage(image: string, endpoint: ApiEndpoints):
     ThunkAction<void, RootState, any, Action<string>> {
   return async function getResultImageThunk(dispatch) {
-    const blob = dataUrlToBlob(image);
-    const formData = new FormData();
-
-    formData.append('image', blob, 'image.jpg');
+    const blob = dataUrlToBase64(image);
     dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
     try {
-      const response = await client.post(endpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await client.post(endpoint, { image: blob }, {
         responseType: 'arraybuffer',
       });
       const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
@@ -61,18 +59,12 @@ export function getResultImage(image: string, endpoint: ApiEndpoints):
 export function getResultImageWithMask(image: string, mask: string, endpoint: ApiEndpoints):
     ThunkAction<void, RootState, any, Action<string>> {
   return async function getResultImageThunk(dispatch) {
-    const blob = dataUrlToBlob(image);
-    const maskBlob = dataUrlToBlob(mask);
-    const formData = new FormData();
+    const blob = dataUrlToBase64(image);
+    const maskBlob = dataUrlToBase64(mask);
 
-    formData.append('image', blob, 'image.jpg');
-    formData.append('mask', maskBlob, 'mask.jpg');
     dispatch({ type: ImageActionTypes.GET_PROCESSED_IMAGE_PENDING });
     try {
-      const response = await client.post(endpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await client.post(endpoint, { image: blob, mask: maskBlob }, {
         responseType: 'arraybuffer',
       });
       const output = 'data:image/png;base64,'.concat(Buffer.from(response.data, 'binary').toString('base64'));
